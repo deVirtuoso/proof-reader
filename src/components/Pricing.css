@@ -1,0 +1,128 @@
+.calculator-panel {
+  max-width: 600px;
+  margin: 0 auto 4rem auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.calculator-panel h3 {
+  margin-bottom: 1.5rem;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 8px;
+  background: var(--border);
+  outline: none;
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--primary);
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(138,43,226,0.8);
+}
+
+.word-count-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.pricing-cards {
+  align-items: stretch;
+}
+
+.pricing-card {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.tier-header {
+  margin-bottom: 2rem;
+}
+
+.turnaround {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.price-display {
+  margin-bottom: 0.5rem;
+}
+
+.currency {
+  font-size: 1.5rem;
+  vertical-align: top;
+  color: var(--text-muted);
+}
+
+.amount {
+  font-size: 4rem;
+  font-weight: 800;
+  font-family: var(--font-heading);
+  color: var(--text-main);
+}
+
+.rate-info {
+  margin-bottom: 2rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.pricing-features {
+  list-style: none;
+  text-align: left;
+  margin: 0 auto;
+  max-width: 250px;
+  flex: 1;
+}
+
+.pricing-features li {
+  margin-bottom: 1rem;
+  font-size: 1.05rem;
+}
+
+.premium-tier {
+  border-color: var(--primary);
+  background: linear-gradient(180deg, rgba(138,43,226,0.1) 0%, rgba(0,0,0,0) 100%);
+  transform: scale(1.05);
+}
+
+.premium-tier:hover {
+  transform: scale(1.08);
+}
+
+.tier-badge {
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, var(--secondary), var(--primary));
+  padding: 0.3rem 1rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+  .premium-tier {
+    transform: none;
+    margin-top: 2rem;
+  }
+  .premium-tier:hover {
+    transform: translateY(-5px);
+  }
+}

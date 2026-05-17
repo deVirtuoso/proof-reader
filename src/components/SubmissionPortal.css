@@ -1,0 +1,135 @@
+.submission-wrapper {
+  display: flex;
+  gap: 4rem;
+  padding: 3rem;
+  margin-top: 2rem;
+}
+
+.submission-info {
+  flex: 1;
+}
+
+.submission-info h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.submission-info p {
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+}
+
+.security-badges {
+  list-style: none;
+  margin-top: 3rem;
+}
+
+.security-badges li {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-weight: 600;
+  color: #adb5bd;
+}
+
+.submission-form-container {
+  flex: 1.5;
+  background: rgba(0,0,0,0.3);
+  padding: 2.5rem;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+}
+
+.file-upload-area {
+  width: 100%;
+}
+
+.file-input {
+  display: none;
+}
+
+.file-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  border: 2px dashed var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  background: rgba(255,255,255,0.02);
+  transition: all 0.3s ease;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.file-label:hover {
+  border-color: var(--primary);
+  background: rgba(138,43,226,0.05);
+  color: var(--text-main);
+}
+
+.upload-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.tier-selector {
+  display: flex;
+  gap: 1rem;
+}
+
+.tier-option {
+  flex: 1;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  background: rgba(0,0,0,0.2);
+}
+
+.tier-option input {
+  display: none;
+}
+
+.tier-option.selected {
+  border-color: var(--primary);
+  background: rgba(138,43,226,0.1);
+  box-shadow: 0 0 10px rgba(138,43,226,0.2);
+}
+
+.total-calculator {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: rgba(255,255,255,0.05);
+  border-radius: 8px;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.total-price {
+  font-size: 1.8rem;
+  color: var(--secondary);
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 1.2rem;
+  font-size: 1.2rem;
+}
+
+@media (max-width: 900px) {
+  .submission-wrapper {
+    flex-direction: column;
+    padding: 2rem;
+  }
+}
