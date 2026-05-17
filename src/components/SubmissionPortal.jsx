@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { createOrder } from '../api/client';
 import './SubmissionPortal.css';
 
 const SubmissionPortal = ({ onProceedToPayment }) => {
@@ -10,6 +11,8 @@ const SubmissionPortal = ({ onProceedToPayment }) => {
     tier: 'normal',
     wordCount: 1000
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const NORMAL_RATE = 0.02;
   const EXPRESS_RATE = 0.04;
@@ -25,8 +28,10 @@ const SubmissionPortal = ({ onProceedToPayment }) => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setSubmitError('');
+
     if (!formData.name || !formData.email) {
       alert("Name and Email are mandatory.");
       return;
@@ -35,12 +40,33 @@ const SubmissionPortal = ({ onProceedToPayment }) => {
       alert("Please upload a document to proofread.");
       return;
     }
-    
-    // Proceed to mock payment
-    onProceedToPayment({
-      ...formData,
-      totalCost: calculateTotal()
-    });
+
+    setIsSubmitting(true);
+    try {
+      const { order } = await createOrder({
+        name: formData.name,
+        email: formData.email,
+        notes: formData.notes,
+        tier: formData.tier,
+        wordCount: formData.wordCount,
+        file: formData.file,
+      });
+
+      onProceedToPayment({
+        id: order.id,
+        name: order.name,
+        email: order.email,
+        notes: order.notes,
+        tier: order.tier,
+        wordCount: order.wordCount,
+        totalCost: order.totalCost,
+        originalFileName: order.originalFileName,
+      });
+    } catch (err) {
+      setSubmitError(err.message || 'Could not submit your order. Is the local API running?');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -156,8 +182,12 @@ const SubmissionPortal = ({ onProceedToPayment }) => {
               <span className="total-price">${calculateTotal()}</span>
             </div>
 
-            <button type="submit" className="btn btn-primary submit-btn">
-              Proceed to Secure Payment 💳
+            {submitError && (
+              <p className="form-error" role="alert">{submitError}</p>
+            )}
+
+            <button type="submit" className="btn btn-primary submit-btn" disabled={isSubmitting}>
+              {isSubmitting ? 'Uploading... ⏳' : 'Proceed to Secure Payment 💳'}
             </button>
 
           </form>

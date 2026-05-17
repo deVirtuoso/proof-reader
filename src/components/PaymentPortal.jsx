@@ -1,17 +1,31 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { getOrder, payOrder } from '../api/client';
 import './PaymentPortal.css';
 
 const PaymentPortal = ({ orderDetails, onCancel, onSuccess }) => {
   const [isProcessing, setIsProcessing] = useState(false);
+  const [paymentError, setPaymentError] = useState('');
 
-  const handlePayment = (e) => {
+  const handlePayment = async (e) => {
     e.preventDefault();
+    setPaymentError('');
     setIsProcessing(true);
-    // Simulate API call to payment gateway
-    setTimeout(() => {
+
+    try {
+      await payOrder(orderDetails.id);
+      await new Promise((r) => setTimeout(r, 1000));
+
+      const { order } = await getOrder(orderDetails.id);
+      if (order.status !== 'paid') {
+        throw new Error('Payment is still processing. Please try again in a moment.');
+      }
+
+      onSuccess(order);
+    } catch (err) {
+      setPaymentError(err.message || 'Payment failed. Please try again.');
+    } finally {
       setIsProcessing(false);
-      onSuccess();
-    }, 2000);
+    }
   };
 
   return (
@@ -68,6 +82,10 @@ const PaymentPortal = ({ orderDetails, onCancel, onSuccess }) => {
               required 
             />
           </div>
+
+          {paymentError && (
+            <p className="form-error" role="alert">{paymentError}</p>
+          )}
 
           <button 
             type="submit" 

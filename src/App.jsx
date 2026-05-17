@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Hero from './components/Hero';
 import WhyUs from './components/WhyUs';
 import WhatYouGet from './components/WhatYouGet';
@@ -15,9 +15,13 @@ function App() {
     setShowPayment(true);
   };
 
-  const handlePaymentSuccess = () => {
+  const handlePaymentSuccess = (order) => {
     setShowPayment(false);
-    alert('Payment Successful! We have received your document and will begin proofreading shortly.');
+    setOrderDetails(null);
+    alert(
+      `Payment successful! Order ${order?.id?.slice(0, 8) ?? ''} is confirmed. ` +
+      'We have received your document and will begin proofreading shortly.'
+    );
   };
 
   const handlePaymentCancel = () => {

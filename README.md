@@ -1,16 +1,78 @@
-# React + Vite
+# ProProof
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Premium proofreading landing site with document upload and checkout. The repo is set up for **fully local, self-contained development** — no Stripe, cloud storage, or external APIs required.
 
-Currently, two official plugins are available:
+## Prerequisites
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- [Node.js](https://nodejs.org/) 20+ (22 recommended)
+- npm 10+
 
-## React Compiler
+## Quick start (full stack)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+npm install
+npm run dev
+```
 
-## Expanding the ESLint configuration
+This starts:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+| Service | URL |
+|---------|-----|
+| Web (Vite) | http://localhost:5173 |
+| Local API | http://localhost:3001 |
+
+Open http://localhost:5173, scroll to **Ready to Shine?**, upload a `.txt`/`.pdf`/`.doc`/`.docx`, and complete the mock checkout.
+
+## Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | API + web together (recommended) |
+| `npm run dev:web` | Frontend only (needs API for submissions) |
+| `npm run dev:api` | Mock API only |
+| `npm run build` | Production build → `dist/` |
+| `npm run preview` | Serve production build |
+| `npm run test:smoke` | API health + order + payment smoke test |
+| `npm run lint` | ESLint |
+
+## Local API
+
+Mock backend in `server/`:
+
+- `GET /api/health` — readiness check
+- `POST /api/orders` — multipart upload + order creation
+- `POST /api/orders/:id/pay` — mock payment (always succeeds)
+- `GET /api/orders/:id` — order status
+
+Uploads are stored under `server/uploads/`. Order metadata is persisted in `server/data/orders.json` (both paths are gitignored).
+
+Optional env vars (see `.env.example`):
+
+```bash
+API_PORT=3001
+MOCK_PAYMENT_DELAY_MS=800
+```
+
+## Smoke test
+
+With the API running (`npm run dev:api` in one terminal, or full `npm run dev`):
+
+```bash
+npm run test:smoke
+```
+
+## Project structure
+
+```
+├── server/           # Express mock API
+├── src/
+│   ├── api/          # fetch client
+│   └── components/   # React UI
+├── scripts/          # smoke-test.mjs
+└── vite.config.js    # proxies /api → localhost:3001
+```
+
+## Notes
+
+- Google Fonts load from the CDN in `index.html` (requires network for typography in dev).
+- Card fields in checkout are UI-only; payment is handled by the local mock API.
