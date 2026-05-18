@@ -76,3 +76,46 @@ npm run test:smoke
 
 - Google Fonts load from the CDN in `index.html` (requires network for typography in dev).
 - Card fields in checkout are UI-only; payment is handled by the local mock API.
+
+## Deploy to Namecheap cPanel (proproof.worldwidechoices.com)
+
+**Why the site looked broken:** cPanel was serving the repo’s root `index.html`, which loads `/src/main.jsx`. That only works with the Vite dev server. Production must serve the **built** files from `dist/` (bundled JS/CSS).
+
+### One-time cPanel setup
+
+1. **Subdomain** — confirm `proproof.worldwidechoices.com` exists (Domains → Subdomains). Note its **document root**, e.g. `/home/you/proproof.worldwidechoices.com`.
+
+2. **Clone Git** — Git Version Control → Clone this repository to a path **outside** the docroot, e.g. `/home/you/repos/proproof` (not into the subdomain folder directly).
+
+3. **Enable deployment** — open the repo → **Manage** → enable deployment:
+   - **Deploy path** = subdomain document root from step 1
+   - cPanel sets `$DEPLOYPATH` for `.cpanel.yml`
+
+4. **Node.js (recommended)** — Software → **Setup Node.js App** → create app (Node 20+), document root can match the subdomain. In Git deploy shell, `npm` must be on `PATH` (cPanel often provides this after Node is installed).
+
+5. **Deploy** — Pull/update from remote, then **Deploy HEAD Commit**. This runs `.cpanel.yml` → `npm ci` → `npm run build` → copies `dist/` into the subdomain folder.
+
+6. **Visit** https://proproof.worldwidechoices.com/ — you should see bundled assets under `/assets/` (check DevTools → Network).
+
+### If deploy fails (no npm on server)
+
+On your PC:
+
+```bash
+npm ci
+npm run build
+```
+
+Upload **everything inside `dist/`** to the subdomain document root via File Manager or FTP (not the whole repo).
+
+### Production API
+
+Shared cPanel hosting serves **static files only**. The Express API in `server/` does not run there, so **upload/checkout will not work** on the live subdomain unless you host the API elsewhere and set `VITE_API_BASE` at build time. The marketing pages (hero, pricing, etc.) will work.
+
+### Troubleshooting
+
+| Symptom | Fix |
+|---------|-----|
+| Blank page | Docroot must contain **built** `index.html` + `assets/`, not repo root |
+| 404 on `/assets/...` | Redeploy `dist/`; confirm deploy path is subdomain root |
+| Submit form errors | Expected without a hosted API; use `npm run dev` locally for full flow |
