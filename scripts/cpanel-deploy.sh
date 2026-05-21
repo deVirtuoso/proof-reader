@@ -5,10 +5,8 @@ set -euo pipefail
 # "Deploy HEAD" for this repository (point it at the subdomain docroot).
 
 if [ -z "${DEPLOYPATH:-}" ]; then
-  echo "ERROR: DEPLOYPATH is not set."
-  echo "In cPanel → Git Version Control → Manage → Deploy HEAD Commit,"
-  echo "set the deployment directory to proproof.worldwidechoices.com document root."
-  exit 1
+  echo "WARN: DEPLOYPATH is not set, defaulting to /home/worlgctp/proproof.worldwidechoices.com"
+  DEPLOYPATH="/home/worlgctp/proproof.worldwidechoices.com"
 fi
 
 if ! command -v npm >/dev/null 2>&1; then

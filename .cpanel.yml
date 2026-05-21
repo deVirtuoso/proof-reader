@@ -1,8 +1,5 @@
 ---
 # cPanel Git deployment — runs when you click "Deploy HEAD Commit".
-# Configure deployment path to your subdomain document root, e.g.:
-#   /home/USERNAME/proproof.worldwidechoices.com
-# cPanel sets $DEPLOYPATH automatically from that setting.
 deployment:
   tasks:
-    - /bin/bash scripts/cpanel-deploy.sh
+    - DEPLOYPATH=/home/worlgctp/proproof.worldwidechoices.com /bin/bash scripts/cpanel-deploy.sh
